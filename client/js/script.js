@@ -2,21 +2,23 @@ window.onload = (event) => {
 	const myButton = document.getElementById("myButton");
 	
 	myButton.addEventListener("click", () => {
-	console.log(Excel.files[0]);
-	formData.append('file', Excel.files[0]);
+		console.log(Excel.files[0]);
+		formData.append('file', Excel.files[0]);
 
-	fetch('http://127.0.0.1:8000/cluster_count_analysis', {
-		method: 'POST',
-		body: formData
-	})
-	.then(response => response.json())
-	.then(data => {
-		console.log(data);
-	})
-	.catch(error => {
-		console.error(error);
-	});
-});
+		fetch('http://127.0.0.1:8000/cluster_count_analysis', {
+			method: 'POST',
+			body: formData
+		})
+		.then(response => {
+			console.log(response)
+			response.reader.rea
+		})
+
+		.catch(error => {
+			console.error(error);
+		});
+	}
+);
 
 	console.log("page is fully loaded");
   };
