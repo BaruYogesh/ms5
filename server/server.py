@@ -132,3 +132,18 @@ async def create_upload_file(file: UploadFile):
 
     return resp
 
+@app.post("/return_wordcount/")
+async def create_wordcount_file(file: UploadFile):
+    df = kmeans.make_df(file)
+
+    buf = kmeans.monthly_dist(2, df)
+
+    session = uuid4()
+    data = SessionData(df=df)
+
+    await backend.create(session, data)
+    resp = StreamingResponse(buf, media_type="image/png")
+    cookie.attach_to_response(resp, session)
+
+    return resp
+
