@@ -44,13 +44,8 @@ window.onload = (event) => {
 );
 
 	myButton2.addEventListener("click", () => {
-		console.log(Excel.files[0]);
-		const formData = new FormData();
-		formData.append('file', Excel.files[0]);
-
-		fetch('http://127.0.0.1:8000/return_wordcount', {
-			method: 'POST',
-			body: formData
+		fetch('http://127.0.0.1:8000/monthly_dist?clusters=14', {
+			method: 'POST'
 		})
 		.then(response => {
 			const reader = response.body.getReader();
@@ -73,11 +68,18 @@ window.onload = (event) => {
 		})
 		.then((stream) => new Response(stream))
 		.then((response) => response.blob())
-		.then((blob) => URL.createObjectURL(blob))
-		.then((url) => {
-			image = document.getElementById('myImg');
-			image.src = url;
+		.then((blob) => openFile(blob))
+		.then((file_data) => {
+			JSZip.loadAsync(data)
+			.then( (data) => {
+				console.log(data);
+			});
 		})
+		// .then((blob) => URL.createObjectURL(blob))
+		// .then((href) => {
+		// 	image = document.getElementById('myImg');
+		// 	image.src = url;
+		// })
 		.catch(error => {
 			console.error(error);
 		});
