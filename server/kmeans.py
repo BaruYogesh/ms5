@@ -16,7 +16,7 @@ def make_df(file: UploadFile) -> pd.DataFrame:
 
     return df
 
-def cluster_count_analysis(df: pd.DataFrame):
+def cluster_count_analysis(df: pd.DataFrame, session):
 
     featureset = []
     for point in range(len(df)):
@@ -39,11 +39,10 @@ def cluster_count_analysis(df: pd.DataFrame):
     plt.xlabel("Number of Clusters")
     plt.ylabel("SSE")
 
-    buf = io.BytesIO()
-    plt.savefig(buf, format="png")
-    buf.seek(0)
+    img_path = './imgs/' + session + '_cca.png'
+    plt.savefig(img_path, format="png")
 
-    return buf
+    return img_path
 
 def monthly_dist(num_clusters, df):
 

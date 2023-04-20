@@ -1,5 +1,5 @@
-from fastapi import FastAPI, UploadFile, Depends, HTTPException
-from fastapi.responses import StreamingResponse, Response
+from fastapi import FastAPI, UploadFile, Depends, HTTPException, Depends
+from fastapi.responses import StreamingResponse, Response, FileResponse
 from pydantic import BaseModel as PydanticBaseModel
 
 import kmeans
@@ -86,17 +86,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post("/create_session/{name}")
-async def create_session(name: str, response: Response):
-
-    session = uuid4()
-    data = SessionData(username=name)
-
-    await backend.create(session, data)
-    cookie.attach_to_response(response, session)
-
-    return f"created session for {name}"
-
 
 @app.get("/whoami", dependencies=[Depends(cookie)])
 async def whoami(session_data: SessionData = Depends(verifier)):
@@ -120,15 +109,22 @@ async def root():
 async def create_upload_file(file: UploadFile):
 
     df = kmeans.make_df(file)
-
-    buf = kmeans.cluster_count_analysis(df)
-
     session = uuid4()
+    buf = kmeans.cluster_count_analysis(df, str(session))
+
+
     data = SessionData(df=df)
 
     await backend.create(session, data)
-    resp = StreamingResponse(buf, media_type="image/png")
+    resp = FileResponse(buf, media_type="image/png")
     cookie.attach_to_response(resp, session)
 
     return resp
 
+@app.post("/monthly_dist/", dependencies=[Depends(cookie)])
+async def monthly_dist(clusters: int, session_data: SessionData = Depends(verifier)):
+    df = session_data
+
+    monthly_dist(clusters=14, df=session_data)
+
+    
