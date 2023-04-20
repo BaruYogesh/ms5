@@ -10,7 +10,6 @@ from sklearn.decomposition import LatentDirichletAllocation
 
 
 def make_df(file: UploadFile) -> pd.DataFrame:
-
     df = pd.read_excel(io.BytesIO(file.file.read()), engine='openpyxl', sheet_name=None)
     df = pd.concat(df, ignore_index=True) # combines all of the worksheets into the same dataframe
 
@@ -39,12 +38,27 @@ def cluster_count_analysis(df: pd.DataFrame, session):
     plt.xlabel("Number of Clusters")
     plt.ylabel("SSE")
 
-    img_path = './imgs/' + session + '_cca.png'
-    plt.savefig(img_path, format="png")
 
-    return img_path
+    buf = io.BytesIO()
+    plt.savefig(buf, format="png")
+    buf.seek(0)
+
+    return buf
 
 def monthly_dist(num_clusters, df):
+
+    featureset = []
+    for point in range(len(df)):
+        featureset.append(str(df['Feature Title'][point]) + ' : '+ str(df['Feature Description'][point]))
+
+
+    cv = sklearn.feature_extraction.text.TfidfVectorizer(max_df=.4, min_df=.1)
+    data = cv.fit_transform(featureset).toarray()
+
+    NUM_CLUSTERS = 14
+    model = sklearn.cluster.KMeans(n_clusters=NUM_CLUSTERS, max_iter=100, n_init=10)
+    model.fit(data)
+    df["Cluster"] = model.labels_ 
 
     MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # Months for display
     for cluster in range(num_clusters):
@@ -57,25 +71,29 @@ def monthly_dist(num_clusters, df):
                 if(isinstance(py_month, int)): # Any row that doesn't have month data should be excluded
                     month_data[py_month] += 1
     
-    print(f'Cluster: {cluster}')
-    plt.bar(MONTHS, month_data)
-    plt.show()
+        arrBuf = []
+        for cluster in range(num_clusters):
+            arrBuf.append(io.BytesIO())
+            plt.bar(MONTHS, month_data)
+            plt.savefig(arrBuf[cluster], format="png")
+        
+        return arrBuf
 
-    # Get the most common words in the clusters
-    cv = sklearn.feature_extraction.text.TfidfVectorizer(max_df=.4, min_df=.1)
-    lda_data = cv.fit_transform(LDA_Featureset).toarray()
+        # # Get the most common words in the clusters
+        # cv = sklearn.feature_extraction.text.TfidfVectorizer(max_df=.4, min_df=.1)
+        # lda_data = cv.fit_transform(LDA_Featureset).toarray()
 
-    lda = LatentDirichletAllocation(n_components = 2, doc_topic_prior=1)
-    lda.fit(lda_data)
+        # lda = LatentDirichletAllocation(n_components = 2, doc_topic_prior=1)
+        # lda.fit(lda_data)
 
-    vocab = cv.get_feature_names_out()
-    topic_words = {}
-    n_top_words = 5
-    for topic, comp in enumerate(lda.components_):
-        word_idx = np.argsort(comp)[::-1][:n_top_words]
-        topic_words[topic] = [vocab[i] for i in word_idx]
+        # vocab = cv.get_feature_names_out()
+        # topic_words = {}
+        # n_top_words = 3
+        # for topic, comp in enumerate(lda.components_):
+        #     word_idx = np.argsort(comp)[::-1][:n_top_words]
+        #     topic_words[topic] = [vocab[i] for i in word_idx]
 
-    for topic, words in topic_words.items():
-        print(f'Top words for topic {topic}')
-        print(' %s' % ', '.join(words))
-    print('\n')
+        # for topic, words in topic_words.items():
+        #     print(f'Top words for topic {topic}')
+        #     print(' %s' % ', '.join(words))
+        # print('\n')

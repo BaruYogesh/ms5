@@ -3,4 +3,5 @@ pandas
 numpy
 scikit-learn
 matplotlib
-fastapi-sessions
+openpyxl
+fastapi_sessions
