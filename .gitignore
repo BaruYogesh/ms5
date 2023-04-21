@@ -1,1 +1,5 @@
 /server/imgs/*
+
+/server/.venv
+
+/client/imgs
