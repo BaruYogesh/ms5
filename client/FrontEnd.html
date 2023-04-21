@@ -7,14 +7,35 @@
 <body>
 	<script src="js/script.js"></script>
 
-	<label for="Excel">Select an Excel File:</label>
-	<input type="file"
-		   id="Excel" name="Excel" onchange="console.log(Excel.value)"
-		   accept =".xlsx">
+	<div id="content_container">
+		<div id="welcome_banner">
+			<p>Welcome, please enter an excel file with these thee columns only:</p>
+			<table id="example_headers">
+				<tr>
+					<th>Feature Title</th>
+					<th>Feature Description</th>
+					<th>Release Date</th>
+				</tr>
+			</table>
+		</div>
+	
+		<br>
+		
+		<div id="button_container">
+		<label for="Excel">Select an Excel File:</label>
+		<input type="file"
+			   id="Excel" name="Excel" onchange="console.log(Excel.value)"
+			   accept =".xlsx">
+	
+		<button id="myButton">Upload</button>
+		<button id="myButton2">Word Count</button>
+		<button id="myButton3">LDA</button>
+		</div>
 
-	<button id="myButton">Upload</button>
-	<img id="myImg"/>
-	<button id="myButton2">Word Count</button>
-	<button id="myButton3">LDA</button>
+		<div id="results_container">
+			<img id="myImg"/>
+		</div>
+
+	</div>
 </body>
 </html>

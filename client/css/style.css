@@ -7,3 +7,41 @@ button {
 	border-radius: 5px;
 	cursor: pointer;
 }
+
+table, th, td{
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 2px;
+}
+
+body{
+	margin-top: 0px;
+	height:100%;
+	width:100%;
+	top: 0px;
+}
+
+#welcome_banner{
+	text-align: center;
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom: 15px;
+	padding-bottom:15px;
+}
+
+#example_headers{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#results_container, #button_container{
+	text-align:center;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#content_container{
+	width: 80%;
+	margin-left:auto;
+	margin-right:auto;
+}
