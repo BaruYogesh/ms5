@@ -35,7 +35,7 @@ def cluster_count_analysis(df: pd.DataFrame, session):
         model = sklearn.cluster.KMeans(n_clusters=k, max_iter=100, n_init=10)
         model.fit(data)
         sse.append(model.inertia_)
-
+    plt.close()
     plt.plot(range(2, MAX_CLUSTERS, 2), sse)
     plt.xticks(range(2, MAX_CLUSTERS, 2))
     plt.xlabel("Number of Clusters")

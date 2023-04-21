@@ -1,5 +1,6 @@
 from fastapi import FastAPI, UploadFile, Depends, HTTPException, Depends, Request
 from fastapi.responses import StreamingResponse, Response, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel as PydanticBaseModel
 
 import kmeans
@@ -86,6 +87,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.mount("/imgs", StaticFiles(directory="imgs"), name="static")
 
 
 @app.get("/whoami", dependencies=[Depends(cookie)])
