@@ -34,7 +34,7 @@ body{
 	margin-right:auto;
 }
 
-#results_container{
+#results_container, #button_container{
 	text-align:center;
 	margin-left:auto;
 	margin-right:auto;
