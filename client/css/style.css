@@ -1,4 +1,11 @@
-button {
+body {
+	margin-top: 0px;
+	top: 0px;
+
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.header-button {
 	font-size: 10px;
 	padding: 10px 10px;
 	background-color: #333;
@@ -8,40 +15,51 @@ button {
 	cursor: pointer;
 }
 
-table, th, td{
+table,
+th,
+td {
 	border: 1px solid black;
 	border-collapse: collapse;
 	padding: 2px;
 }
 
-body{
-	margin-top: 0px;
-	height:100%;
-	width:100%;
-	top: 0px;
-}
 
-#welcome_banner{
+#welcome_banner {
 	text-align: center;
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
 	margin-bottom: 15px;
-	padding-bottom:15px;
+	padding-bottom: 15px;
 }
 
-#example_headers{
-	margin-left:auto;
-	margin-right:auto;
+#example_headers {
+	margin-left: auto;
+	margin-right: auto;
 }
 
-#results_container, #button_container{
-	text-align:center;
-	margin-left:auto;
-	margin-right:auto;
+#results_container,
+#button_container {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-#content_container{
+#content_container {
 	width: 80%;
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
 }
+
+#carouselIndicators {
+	bottom: unset;
+}
+
+#carouselImages {
+	padding-left: 12%;
+	padding-right: 12%;
+}
+
+/* #lda_results_container {
+	background-color: grey;
+	height: 300px;
+} */
