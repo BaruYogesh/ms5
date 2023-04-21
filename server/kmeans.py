@@ -101,15 +101,7 @@ def monthly_dist(num_clusters, df, session):
 
             lda_json[cluster]['topic' + str(topic)] = words
 
-    with open('./imgs/' + session + '.json', 'w') as lda_json_file:
-        json.dump(lda_json, lda_json_file)
-    
-    zip_io = io.BytesIO()
-    with zipfile.ZipFile(zip_io, mode='w', compression=zipfile.ZIP_DEFLATED) as temp_zip:
-        for filename in os.listdir('./imgs'):
-            if filename.startswith(session):
-                temp_zip.write('./imgs/' + filename)
 
-    return zip_io
+    return lda_json
 
 

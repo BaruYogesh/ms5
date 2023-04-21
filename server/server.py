@@ -128,14 +128,8 @@ async def create_upload_file(file: UploadFile):
 @app.post("/monthly_dist/", dependencies=[Depends(cookie)])
 async def monthly_dist(clusters: int, session_data: SessionData = Depends(verifier), session_id: UUID = Depends(cookie)):
     df = session_data.df
-
-    zip_io = kmeans.monthly_dist(num_clusters=clusters, df=df, session=str(session_id))
-
-    return StreamingResponse(
-        iter([zip_io.getvalue()]), 
-        media_type="application/x-zip-compressed", 
-        headers = { "Content-Disposition": f"attachment; filename=lda.zip"}
-    )
+    
+    return kmeans.monthly_dist(num_clusters=clusters, df=df, session=str(session_id))
 
 
 @app.post("/return_wordcount/")
