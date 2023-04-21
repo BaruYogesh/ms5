@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, Depends, HTTPException, Depends
+from fastapi import FastAPI, UploadFile, Depends, HTTPException, Depends, Request
 from fastapi.responses import StreamingResponse, Response, FileResponse
 from pydantic import BaseModel as PydanticBaseModel
 
@@ -14,7 +14,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pandas import DataFrame
 
 origins = [
-    "*"
+    "http://localhost:8080",
+    "http://localhost"
 ]
 
 class BaseModel(PydanticBaseModel):
@@ -78,7 +79,7 @@ verifier = BasicVerifier(
 
 app = FastAPI()
 
-app.add_middleware(
+app.add_middleware( 
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
@@ -99,7 +100,8 @@ async def del_session(response: Response, session_id: UUID = Depends(cookie)):
     return "deleted session"
 
 @app.get("/")
-async def root():
+async def root(request: Request):
+    print(request.headers.get('host'))
     return {"message": "Hello World"}
 
 # @app.get('/create_df')

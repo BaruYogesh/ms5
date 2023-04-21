@@ -1,15 +1,17 @@
 window.onload = (event) => {
 	const myButton = document.getElementById("myButton");
 	const myButton2 = document.getElementById("myButton2");
+	const myButton3 = document.getElementById("myButton3");
 	
 	myButton.addEventListener("click", () => {
 		console.log(Excel.files[0]);
 		const formData = new FormData();
 		formData.append('file', Excel.files[0]);
 
-		fetch('http://127.0.0.1:8000/cluster_count_analysis', {
+		fetch('http://localhost:8000/cluster_count_analysis', {
 			method: 'POST',
-			body: formData
+			body: formData,
+			credentials: 'include'
 		})
 		.then(response => {
 			const reader = response.body.getReader();
@@ -48,7 +50,7 @@ window.onload = (event) => {
 		const formData = new FormData();
 		formData.append('file', Excel.files[0]);
 
-		fetch('http://127.0.0.1:8000/return_wordcount', {
+		fetch('http://localhost:8000/return_wordcount', {
 			method: 'POST',
 			body: formData
 		})
@@ -82,12 +84,13 @@ window.onload = (event) => {
 			console.error(error);
 		});
 	}
+
+	
 );
 
+myButton3.addEventListener('click', () => ldaTest())
 	console.log("page is fully loaded");
   };
-
-
 
 function openFile(event){
 	const input = event.target;
@@ -97,6 +100,14 @@ function openFile(event){
 		console.log(text);
 	};
 	reader.readAsText(input.value);
+}
+
+function ldaTest(){
+	fetch('http://localhost:8000/monthly_dist?clusters=14',
+	{
+		method: 'POST',
+		credentials: 'include'
+	} )
 }
 
 const inputFile = document.querySelector('input[type="file"]');

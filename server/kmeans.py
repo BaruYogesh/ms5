@@ -75,10 +75,10 @@ def monthly_dist(num_clusters, df, session):
                 py_month = pd.Timestamp(df["Release Date"][point]).month - 1 # pandas has timestamp to extract month as int easily
                 if(isinstance(py_month, int)): # Any row that doesn't have month data should be excluded
                     month_data[py_month] += 1
-        plt.figure(cluster)
+        plt.close()
         plt.bar(MONTHS, month_data)
         img_filename = session + "_" + str(cluster) + '.png'
-        plt.savefig("./imgs/" + img_filename, format="png")
+        plt.savefig("./imgs/" + img_filename, format="png") 
 
         lda_json[cluster] = {}
         lda_json[cluster]['graph'] = img_filename
